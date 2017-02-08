@@ -1,0 +1,271 @@
+% \documentclass{vldb}
+% \documentclass[sigconf]{acmart}
+\documentclass{IEEEtran}
+% ============================================================
+
+\let\proof\relax 
+\let\endproof\relax 
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[vlined, ruled, linesnumbered]{algorithm2e}
+\usepackage[export]{adjustbox}
+\usepackage{balance}
+\usepackage{bm}
+\usepackage{booktabs, tabularx}
+\usepackage[skip=4pt,font={bf}]{caption}  %shrink...
+\let\labelindent\relax  % both IEEEtran and enumitem define \labelindent
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{hyperref}
+% \usepackage[noabbrev]{cleveref} % load hyperref before cleveref
+\usepackage{cleveref} % load hyperref before cleveref
+% \usepackage{listings}
+\usepackage{multirow}
+% \def\newblock{\relax} % for natbib
+% \usepackage[numbers, sort&compress]{natbib}  % compact citations
+\usepackage{subfig}
+\usepackage{siunitx}
+\usepackage{tikz}
+\usepackage{tikzpeople}
+\usepackage{thmtools, thm-restate}
+\usepackage{xcolor}
+
+% ============================================================
+% Is this a technical report?
+% \def\techreport{true}
+% Papertech mode? (output \onlypaper and \onlytech in different colors)
+% \def\papertech{true}
+
+% Tech report or paper?
+\ifx\papertech\undefined
+  \ifx\techreport\undefined
+    % Paper
+    \newcommand{\onlytech}[1]{\ignorespaces}
+    \newcommand{\onlypaper}[1]{#1}
+  \else
+    % Technical reports
+    \newcommand{\onlytech}[1]{#1}
+    \newcommand{\onlypaper}[1]{\ignorespaces}
+    \pagenumbering{arabic} % add page number
+    \makeatletter
+    \def\@copyrightspace{\relax}
+    \makeatother
+  \fi
+\else
+  % papertech mode
+  \newcommand{\onlytech}[1]{{\color{blue}[(TECH ONLY) #1]}}
+  \newcommand{\onlypaper}[1]{{\color{olive}[(PAPER ONLY) #1]}}
+\fi
+
+
+% ============================================================
+% Fonts (load times before others)
+% - Using Times could further squeeze the paper (should be used with caution)
+% \usepackage{times}
+% - Change texttt fonts
+\makeatletter%
+\@ifclassloaded{acmart}
+{}{
+  % for non-acmart template
+  \usepackage{substitutefont, newtxtext} % texttt
+}
+\makeatother
+
+% ============================================================
+% Moveproofs adapted from https://github.com/thisisdhaas/moveproofs
+% - Move proofs to the appendix
+\usepackage[location=appendix]{sty/moveproofs}
+% - Proof appears at its original location
+% \usepackage{sty/moveproofs}
+
+% ============================================================
+% % Debug (showing overfull box)
+% \overfullrule=10pt
+% \usepackage{lineno}
+% \linenumbers
+
+% ============================================================
+% Table caption
+\def\tablename{Table}
+\renewcommand{\thetable}{\arabic{table}}  % numbering
+
+% ============================================================
+% Colors
+\definecolor{red}{HTML}{E51400}  %red
+\definecolor{blue}{HTML}{0050EF} %cobalt
+\definecolor{green}{HTML}{008A00} %emerald
+\definecolor{purple}{HTML}{AA00FF} %violet
+\definecolor{dark-red}{rgb}{0.4, 0.15, 0.15}
+\definecolor{dark-blue}{rgb}{0.15, 0.15, 0.4}
+\definecolor{medium-red}{rgb}{0.5, 0, 0}
+\definecolor{medium-blue}{rgb}{0, 0, 0.5}
+\definecolor{light-red}{rgb}{0.7, 0, 0}
+\definecolor{light-blue}{rgb}{0, 0, 0.7}
+
+% ============================================================
+% Styles of hyperlinks
+\hypersetup{
+  colorlinks,
+  linkcolor={medium-red},
+  citecolor={medium-blue},
+  urlcolor={medium-blue}
+}
+
+% ============================================================
+% Algorithms
+\newcommand\mycommfont[1]{\textcolor{medium-blue}{#1}}
+\SetCommentSty{mycommfont}
+\DontPrintSemicolon
+\SetKw{And}{and}%
+\SetKw{Continue}{continue}%
+\SetKwProg{myproc}{Procedure}{}{}%
+\SetKwProg{myalgo}{Algorithm}{}{}%
+% \algrule (a horizontal line in pseudo-codes)
+\makeatletter
+\newcommand{\algrule}{\par\vskip.2\baselineskip{\color{black!30}\hrule}\par\vskip.2\baselineskip}
+\makeatother
+
+% ============================================================
+% Define layers (for tikz plots)
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+
+% ============================================================
+% Theorem, lemma, etc.
+\makeatletter%
+\@ifclassloaded{acmart}{}{
+  % acmart definds theorem, lemma, ...
+  \declaretheorem{theorem}
+  \declaretheorem{lemma}
+  \declaretheorem{corollary}
+  \declaretheorem{definition}
+  \declaretheorem{assumption}
+}
+\makeatother
+\renewcommand{\proofname}{\textnormal{\textbf{Proof:}}}
+\renewcommand\qedsymbol{\rule{1.8mm}{2.5mm}} % a slim balck square
+
+% ============================================================
+% Format commands 
+\newcommand{\authorsym}[1]{\raisebox{2pt}{$^{#1}$}}
+\newcommand{\topic}[1]{\noindent\textbf{{#1}}}
+
+% ============================================================
+% Math commands
+\DeclareMathOperator*{\argmax}{arg\,max}% http://tex.stackexchange.com/q/5223/5764
+
+% ============================================================
+% Clever ref
+\newcommand{\crefrangeconjunction}{-} % For example: Eq.(1)-(2)
+
+% ============================================================
+% Commands for comments:
+\newcommand{\compilehidecomments}{false}
+\ifthenelse{\equal{\compilehidecomments}{true}}{%
+  \newcommand{\yishi}[1]{}
+}{
+  \newcommand{\yishi}[1]{{\color{red}[\text{Yishi:} #1]}}
+}
+\newcommand{\todo}[1]{{\color{blue}[\textbf{TODO:} #1]}}
+\newcommand{\notes}[1]{{\color{green}[\textbf{NOTES:} #1}]}
+
+% ============================================================
+% Macros for this paper
+\usetikzlibrary{shapes.geometric}%
+\usetikzlibrary{positioning}%
+\usetikzlibrary{arrows}%
+\usetikzlibrary{fit}%
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.shapes}
+\usetikzlibrary{calc}
+\usetikzlibrary{backgrounds}
+
+\newcommand{\indicator}[1]{\mathbb{I} ({#1})}
+\newcommand{\wrt}{w.r.t.\xspace}
+\newcommand{\whp}{with high probability\xspace}
+\newcommand{\Whp}{With high probability\xspace}
+
+% ============================================================
+% Title and author blocks
+\title{My Paper Templates}
+
+\makeatletter%
+\@ifclassloaded{IEEEtran}{
+  \author{
+    \IEEEauthorblockN{Yishi Lin\IEEEauthorrefmark{1}}\\
+    \IEEEauthorblockA{\IEEEauthorrefmark{1} The Chinese University of Hong Kong}\\
+    \IEEEauthorblockA{\IEEEauthorrefmark{1} yslin@cse.cuhk.edu.hk}
+  }
+}
+{}
+\@ifclassloaded{vldb}{
+  \numberofauthors{1}
+  \author{
+    \alignauthor Yishi Lin\\
+    \affaddr{The Chinese University of Hong Kong}   \\
+    \email{yslin@cse.cuhk.edu.hk}
+  }
+}
+{}
+\@ifclassloaded{acmart}{
+  % Copyright
+  \setcopyright{rightsretained}
+  % DOI
+  \acmDOI{10.475/123_4}
+  % ISBN
+  \acmISBN{123-4567-24-567/08/06}
+  %Conference
+  \acmConference[FUN'17]{ACM conference}{Feb 2017}{Fun places}
+  \acmYear{1997}
+  \copyrightyear{2016}
+  \acmPrice{15.00}
+  \titlenote{titlenote}
+  \subtitle{subtitle}
+  \subtitlenote{subtitlenote}
+  \author{Yishi Lin}
+  \authornote{authornote}
+  \affiliation{%
+    \institution{The Chinese University of Hong Kong}
+  }
+  \email{yslin@cse.cuhk.edu.hk}
+
+  % The default list of authors is too long for headers}
+  \renewcommand{\shortauthors}{shortauthors}
+}
+{}
+\makeatother%
+
+% ============================================================
+\begin{document}
+
+\ifx\techreport\undefined
+  % % Squeeze the paper (should be used with caution)
+  % \setlength{\textfloatsep}{1\textfloatsep}
+  % \setlength{\dbltextfloatsep}{1\dbltextfloatsep}
+  % \setlength{\floatsep}{1\floatsep}
+  % \setlength{\dblfloatsep}{1\dblfloatsep}
+  % % \setlength{\abovediplayskip}{1\baselineskip} % undefined for IEEEtrans
+  % \setlength{\belowdisplayskip}{1\baselineskip}
+  % \captionsetup[subfloat]{captionskip=2pt}  % shrinking
+\fi
+%
+\maketitle
+
+\input{samplebody}
+
+\bibliographystyle{abbrv}
+% \bibliographystyle{ACM-Reference-Format}
+
+% Use smaller fonts (e.g., \small) if necessary
+\onlypaper{{\normalsize \bibliography{mybib}}}
+\onlytech{\bibliography{mybib}}
+
+% Comment out if necessary
+\appendix
+\section{Headings in Appendices}
+
+\end{document}

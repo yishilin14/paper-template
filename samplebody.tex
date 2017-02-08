@@ -1,0 +1,145 @@
+\section{Fonts}
+
+\topic{Features.}
+Change the font of \texttt{texttt}.
+
+\section{Paper or tech report}
+
+\topic{Features.}
+One could maintain the conference paper and technical reports (full version) is
+the same set of files.
+
+\begin{itemize}
+\item This is a normal sentence.
+\item Only paper: \onlypaper{This sentence only appears in the paper.}
+\item Only tech: \onlytech{This sentence only appears in the technical report.}
+\end{itemize}
+
+\section{Colors}\label{sec:color}
+
+\topic{Features.}
+Manually set colors of hyper links.
+
+\begin{itemize}
+\item Links (medium-red): \Cref{sec:color}
+\item Citation (medium-blue): \cite{lin2017boosting}
+\item URL (medium-blue): \url{google.com}
+\end{itemize}
+
+\section{Algorithm}
+
+\topic{Features.}
+(1) Comments are in dark blue. (2) One may use a cut-off rule \texttt{algrule}
+to cut a piece of long pseudo-code.
+
+\begin{algorithm}
+  \SetKwFunction{MyFunc}{MyFunc}%
+  \KwIn{inputs}%
+  \KwOut{outputs}%
+  $X\leftarrow$ \MyFunc{} \tcp*{Hola!} \label{algo:l1}%
+  $X\leftarrow$ \MyFunc{}\;%
+  $X\leftarrow$ \MyFunc{}\label{algo:l3}\;%
+  \algrule %
+  \myproc{\MyFunc{}}{%
+    \KwRet{``Hello world''}\;%
+  }
+  \caption{Hello World} \label{algo:findcp}
+\end{algorithm}
+
+\section{Moving proofs}
+
+The package \texttt{sty/moveproofs.sty} is adapted from repository
+\url{https://github.com/thisisdhaas/moveproofs}.
+The package is useful if one prefers writing theorems and their proofs in the
+same LaTex files.
+(I am too lazy to manually move proofs to appendix.)
+
+\begin{itemize}
+\item To show all ``makeproof'' proofs in the appendix, use:
+\begin{verbatim}
+\usepackage[location=appendix]{sty/moveproofs}
+\end{verbatim}
+\item To show all ``makeproof'' proofs in its original location, use:
+\begin{verbatim}
+\usepackage{sty/moveproofs}
+\end{verbatim}
+\end{itemize}
+
+Here goes a sample theorem and its proof.
+The proof appears in the appendix if \texttt{location=appendix}.
+
+\begin{theorem}\label{thm:sample}
+  A sample theorem.
+\end{theorem}
+
+\makeproof{thm:sample}{ %
+  The proof of the sample theorem (\Cref{thm:sample}).
+}
+
+\begin{proof}
+  A normal \texttt{proof} environment.
+\end{proof}
+
+\section{Restating theorems}
+
+The package \texttt{thm-restate}
+\footnote{\url{http://tug.ctan.org/macros/latex/exptl/thmtools/thmtools.pdf} }
+is useful for re-stating theorems in the appendix (e.g., right before the proof
+manually put in the appendix).
+
+\begin{restatable}[Euclid]{theorem}{firsteuclid}
+  \label{thm:euclid}%
+  For every prime $p$, there is a prime $p'>p$.
+  In particular, the list of primes,
+  \begin{equation}\label{eq:1}
+    2,3,5,7,\dots
+  \end{equation}
+  is infinite.
+\end{restatable}
+
+Use \verb|\firsteuclid*| to restate the theorem. 
+The outputs are as follow.
+
+\firsteuclid*
+
+\section{Smart references}
+
+The package \texttt{cleveref} is
+useful\footnote{\url{http://mirrors.ctan.org/macros/latex/contrib/cleveref/cleveref.pdf}}.
+
+Some example equations
+\begin{align}
+  &\log xy = \log x + \log y \label{eq:log}\\
+  &a^2 +b^2=c^2\label{eq:pyth} \\
+  &E=mc^2 \label{eq:emc2}
+\end{align}
+
+Examples of \texttt{cref} and \texttt{crefrange}:
+\begin{itemize}
+\item \verb|\Cref{eq:log}|: \Cref{eq:log}
+\item \verb|\Crefrange{eq:log}{eq:emc2}|: \Crefrange{eq:log}{eq:emc2}
+\item \verb|\cref{eq:log}|: \cref{eq:log}
+\item \verb|\crefrange{eq:log}{eq:emc2}|: \crefrange{eq:log}{eq:emc2}
+\item \verb|\Cref{algo:l1}|: \Cref{algo:l1}
+\item \verb|\Crefrange{algo:l1}{algo:l3}|: \Crefrange{algo:l1}{algo:l3}
+\item \verb|\cref{algo:l1}|: \cref{algo:l1}
+\item \verb|\crefrange{algo:l1}{algo:l3}|: \crefrange{algo:l1}{algo:l3}
+\end{itemize}
+
+From the document of \texttt{cleveref}: ``To disable all use of abbreviations in
+the default cross-reference names (e.g., for VLDB) , pass the \texttt{noabbrev}
+option to the \texttt{cleveref} package.''
+
+\section{More Commands}
+
+More commands for adding notes to the paper.
+
+\begin{itemize}
+\item \verb|\yishi{hi}|: \yishi{hi}
+\item \verb|\notes{hi}|: \notes{hi}
+\item \verb|\todo{hi}|: \todo{hi}
+\end{itemize}
+
+\section{Squeezing the paper}
+
+Search ``squeeze'' in \texttt{main.tex}!
